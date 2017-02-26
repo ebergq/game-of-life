@@ -1,0 +1,19 @@
+body {
+  background-color: #181818;
+  color: #81f265;
+  margin-left: 5%;
+  margin-top: 0%;
+}
+
+.container {
+}
+
+.board {
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+}
+
+.score {
+  margin-right: auto;
+}
