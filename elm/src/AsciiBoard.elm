@@ -15,7 +15,7 @@ show : Board -> String
 show board =
   cells board
   |> List.map (getChar board)
-  |> chunkBySize board.width
+  |> chunkBySize board.size
   |> List.map String.fromList
   |> List.intersperse "\n"
   |> String.concat

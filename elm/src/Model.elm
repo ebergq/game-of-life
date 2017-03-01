@@ -3,6 +3,5 @@ module Model exposing (Board, Cell)
 type alias Cell = (Int, Int)
 
 type alias Board =
-  { width : Int
-  , height : Int
+  { size : Int
   , livingCells : List Cell }

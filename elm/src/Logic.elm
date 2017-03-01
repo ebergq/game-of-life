@@ -11,10 +11,10 @@ unique list = case list of
   (x :: xs) -> x :: unique (List.filter (\e -> e /= x) xs)
 
 xs : Board -> List Int
-xs board = List.range 0 (board.width - 1)
+xs board = List.range 0 (board.size - 1)
 
 ys : Board -> List Int
-ys board = List.range 0 (board.height - 1)
+ys board = List.range 0 (board.size - 1)
 
 cells : Board -> List Cell
 cells board = cartesian (xs board) (ys board)
@@ -31,7 +31,7 @@ neighbours board (x0, y0) =
     |> List.filter (\(x, y) -> x /= 0 || y /= 0)
     |> List.map (\(x, y) -> (x0 + x, y0 + y))
     |> List.filter (\(x, y) -> x >= 0 && y >= 0)
-    |> List.filter (\(x, y) -> x < board.width && y < board.height)
+    |> List.filter (\(x, y) -> x < board.size && y < board.size)
 
 numberOfAliveNeighbours : Board -> Cell -> Int
 numberOfAliveNeighbours board cell =

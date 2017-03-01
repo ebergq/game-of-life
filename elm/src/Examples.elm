@@ -4,8 +4,7 @@ import Model exposing (Board)
 
 gosperGliderGun : Board
 gosperGliderGun =
-  { width = 40
-  , height = 40
+  { size = 40
   , livingCells = [ (1,5), (2,5), (1,6), (2,6)
                   , (11,5), (11,6), (11,7), (12,4), (12,8), (13,3), (13,9)
                   , (14,3), (14,9), (15,6), (16,4), (16,8)
