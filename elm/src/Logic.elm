@@ -33,17 +33,16 @@ neighbours board (x0, y0) =
     |> List.filter (\(x, y) -> x >= 0 && y >= 0)
     |> List.filter (\(x, y) -> x < board.width && y < board.height)
 
-allFieldSum : Board -> Cell -> Int
-allFieldSum board cell =
+numberOfAliveNeighbours : Board -> Cell -> Int
+numberOfAliveNeighbours board cell =
   neighbours board cell
   |> List.filter (isAlive board)
   |> List.length
-  |> (\x -> x + if isAlive board cell then 1 else 0)
 
 shouldBeAlive : Board -> Cell -> Bool
 shouldBeAlive board cell =
-  let sum = allFieldSum board cell
-  in sum == 3 || sum == 4 && isAlive board cell
+  let n = numberOfAliveNeighbours board cell
+  in n == 3 || n == 2 && isAlive board cell
 
 transition : Board -> Board
 transition board =
