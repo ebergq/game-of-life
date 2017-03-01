@@ -2,9 +2,12 @@ import Model exposing (Board, Cell)
 import Logic exposing (transition)
 import AsciiBoard exposing (show)
 import Examples exposing (gosperGliderGun)
+import Render exposing (renderBoard)
 
+import Collage exposing (collage)
+import Element exposing (toHtml)
 import Html exposing (Html)
-import Html.Attributes as Att
+import Html.Attributes as Attr
 import Time exposing (Time)
 
 type alias Model =
@@ -14,10 +17,12 @@ type alias Model =
 
 type Msg = Tick Time
 
+onTick : Model -> (Model, Cmd Msg)
 onTick model =
-  ( { model | board = transition model.board, ticks = model.ticks + 1 }
-  , Cmd.none
-  )
+  { model | board = transition model.board, ticks = model.ticks + 1 } ! []
+
+collageSize : Int
+collageSize = 700
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -29,17 +34,15 @@ board model = show model.board
 
 view : Model -> Html Msg
 view model =
-  Html.div [Att.class "container"]
-  [ Html.pre [Att.class "board"] [ Html.text (board model) ]
-  , Html.pre [Att.class "score"]
-      [ Html.text ("Transitions: " ++ toString model.ticks) ]
-  ]
+  Html.div
+    [ Attr.class "container" ]
+    [ toHtml (collage collageSize collageSize (renderBoard model.board))]
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.batch [Time.every (Time.second/2) Tick]
+subscriptions model = Sub.batch [Time.every (Time.second/10) Tick]
 
 init : (Model, Cmd Msg)
-init = ({ board = gosperGliderGun, ticks = 0 }, Cmd.none)
+init = { board = gosperGliderGun, ticks = 0 } ! []
 
 main =
   Html.program
