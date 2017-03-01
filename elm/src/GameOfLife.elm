@@ -40,7 +40,6 @@ subscriptions model = Sub.batch [Time.every (Time.second/2) Tick]
 
 init : (Model, Cmd Msg)
 init = ({ board = gosperGliderGun, ticks = 0 }, Cmd.none)
---init = ({ board = { width = 25, height = 25, livingCells = [(2,1), (2,2), (2,3)] }, ticks = 0 }, Cmd.none)
 
 main =
   Html.program
