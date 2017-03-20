@@ -1,6 +1,16 @@
-module Examples exposing (gosperGliderGun)
+module Examples exposing (..)
 
 import Model exposing (Board)
+
+block : Board
+block =
+  { size = 4
+  , livingCells = [ (1,1), (1,2), (2,1), (2,2) ] }
+
+blinker : Board
+blinker =
+  { size = 5
+  , livingCells = [ (1,2), (2,2), (3,2) ] }
 
 gosperGliderGun : Board
 gosperGliderGun =

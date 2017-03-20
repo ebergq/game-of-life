@@ -1,7 +1,7 @@
 import Model exposing (Board, Cell)
 import Logic exposing (transition)
 import AsciiBoard exposing (show)
-import Examples exposing (gosperGliderGun)
+import Examples exposing (..)
 import Render exposing (renderBoard)
 
 import Collage exposing (collage)
