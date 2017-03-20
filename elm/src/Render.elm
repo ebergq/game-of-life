@@ -12,11 +12,11 @@ collageSize = 700
 backgroundColor : Color
 backgroundColor = rgb 225 225 225
 
-renderBackground : Board -> Form
-renderBackground board = rect collageSize collageSize |> filled backgroundColor
+renderBackground : Form
+renderBackground = rect collageSize collageSize |> filled backgroundColor
 
-renderCell : Float -> Board -> Cell -> Form
-renderCell size board (x, y) =
+renderCell : Float -> Cell -> Form
+renderCell size (x, y) =
   rect size size
   |> filled Color.black
   |> move (toFloat x * size, toFloat y * size)
@@ -24,12 +24,8 @@ renderCell size board (x, y) =
 
 renderCells : Board -> List Form
 renderCells board =
-  let
-    cellSize = collageSize / (toFloat board.size)
-  in
-    cells board
-    |> List.filter (isAlive board)
-    |> List.map (renderCell cellSize board)
+  let cellSize = collageSize / (toFloat board.size)
+  in List.map (renderCell cellSize) board.livingCells
 
 renderBoard : Board -> List Form
-renderBoard board = renderBackground board :: renderCells board
+renderBoard board = renderBackground :: renderCells board
