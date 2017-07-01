@@ -1,9 +1,9 @@
-import Model exposing (Board, Cell)
+import Model exposing (Board)
 import Logic exposing (transition)
-import AsciiBoard exposing (show)
 import Examples exposing (..)
 import Render exposing (renderBoard)
 
+import AnimationFrame
 import Collage exposing (collage)
 import Element exposing (toHtml)
 import Html exposing (Html)
@@ -11,11 +11,11 @@ import Html.Attributes as Attr
 import Time exposing (Time)
 
 type alias Model =
-  { board: Board
+  { board: Board Bool
   , ticks: Int
   }
 
-type Msg = Tick Time
+type Msg = Tick
 
 onTick : Model -> (Model, Cmd Msg)
 onTick model =
@@ -27,10 +27,7 @@ collageSize = 700
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    Tick time -> onTick model
-
-board : Model -> String
-board model = show model.board
+    Tick -> onTick model
 
 view : Model -> Html Msg
 view model =
@@ -39,7 +36,8 @@ view model =
     [ toHtml (collage collageSize collageSize (renderBoard model.board))]
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.batch [Time.every (Time.second/10) Tick]
+subscriptions model =
+  AnimationFrame.diffs (always Tick)
 
 init : (Model, Cmd Msg)
 init = { board = gosperGliderGun, ticks = 0 } ! []

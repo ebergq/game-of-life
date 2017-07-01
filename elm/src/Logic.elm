@@ -1,52 +1,16 @@
-module Logic exposing (cells, isAlive, transition)
+module Logic exposing (transition)
 
-import Model exposing (Board, Cell)
+import Model exposing (Board, apply, neighbours)
 
-cartesian : List a -> List b -> List (a, b)
-cartesian xs ys = List.concatMap (\y -> List.map (\x -> (x, y)) xs) ys
-
-unique : List a -> List a
-unique list = case list of
-  []        -> []
-  (x :: xs) -> x :: unique (List.filter (\e -> e /= x) xs)
-
-xs : Board -> List Int
-xs board = List.range 0 (board.size - 1)
-
-ys : Board -> List Int
-ys board = List.range 0 (board.size - 1)
-
-cells : Board -> List Cell
-cells board = cartesian (xs board) (ys board)
-
-isAlive : Board -> Cell -> Bool
-isAlive board cell = List.member cell board.livingCells
-
-neighbours : Board -> (Int, Int) -> List (Int, Int)
-neighbours board (x0, y0) =
-  let xRange = List.range -1 1
-  in let yRange = List.range -1 1
-  in
-    cartesian xRange yRange
-    |> List.filter (\(x, y) -> x /= 0 || y /= 0)
-    |> List.map (\(x, y) -> (x0 + x, y0 + y))
-    |> List.filter (\(x, y) -> x >= 0 && y >= 0)
-    |> List.filter (\(x, y) -> x < board.size && y < board.size)
-
-numberOfAliveNeighbours : Board -> Cell -> Int
-numberOfAliveNeighbours board cell =
-  neighbours board cell
-  |> List.filter (isAlive board)
+numberOfAliveNeighbours : Int -> Int -> Board Bool -> Int
+numberOfAliveNeighbours x y board =
+  neighbours x y board
+  |> List.filter identity
   |> List.length
 
-shouldBeAlive : Board -> Cell -> Bool
-shouldBeAlive board cell =
-  let n = numberOfAliveNeighbours board cell
-  in n == 3 || n == 2 && isAlive board cell
-
-transition : Board -> Board
+transition : Board Bool -> Board Bool
 transition board =
-  { board | livingCells = board.livingCells
-                          |> List.concatMap (neighbours board)
-                          |> unique
-                          |> List.filter (shouldBeAlive board) }
+  let shouldBeAlive x y isAlive =
+    let n = numberOfAliveNeighbours x y board
+    in n == 3 || n == 2 && isAlive
+  in apply shouldBeAlive board

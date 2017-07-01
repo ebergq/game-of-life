@@ -15,17 +15,21 @@ backgroundColor = rgb 225 225 225
 renderBackground : Form
 renderBackground = rect collageSize collageSize |> filled backgroundColor
 
-renderCell : Float -> Cell -> Form
-renderCell size (x, y) =
+renderCell : Float -> (Int, Int, Bool) -> Form
+renderCell size (x, y, isAlive) =
   rect size size
-  |> filled Color.black
+  |> filled (if isAlive then Color.black else Color.white)
   |> move (toFloat x * size, toFloat y * size)
   |> move ((size - collageSize) / 2, (size - collageSize) / 2)
 
-renderCells : Board -> List Form
+renderCells : Board Bool -> List Form
 renderCells board =
-  let cellSize = collageSize / (toFloat board.size)
-  in List.map (renderCell cellSize) board.livingCells
+  let cellSize = collageSize / (toFloat (Tuple.first board.size))
+  in
+    board
+    |> extract
+    |> List.filter (\(_, _, v) -> v)
+    |> List.map (renderCell cellSize)
 
-renderBoard : Board -> List Form
+renderBoard : Board Bool -> List Form
 renderBoard board = renderBackground :: renderCells board
